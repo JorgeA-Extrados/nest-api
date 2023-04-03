@@ -9,7 +9,7 @@ export class ProductController {
     createPost(@Res() res, @Body() createProductDTO: CreateProductDTO) {
         
         return res.status(HttpStatus.OK).json({
-            message: 'received'
+            message: 'received',
         })
     }
 }
