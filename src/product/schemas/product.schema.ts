@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 export const ProductSchema = new Schema({
     name: { type: String, required: true },
@@ -8,5 +8,9 @@ export const ProductSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    proveedor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Proveedor'
     }
 });
