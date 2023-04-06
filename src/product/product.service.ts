@@ -37,4 +37,15 @@ export class ProductService {
         return updateProduct;
     }
 
+    async calculoIVA(productID: string) {
+        const calculoIVA = await this.productModel.findById((productID));
+        const IVA = (calculoIVA.price * 21) / 100 
+        const PriceIVA = calculoIVA.price + IVA;
+
+        return {
+            IVA,
+            PriceIVA
+        }
+    }
+
 }
