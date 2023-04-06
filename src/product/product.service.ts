@@ -9,12 +9,16 @@ export class ProductService {
     constructor(@InjectModel('Product') private readonly productModel: Model<Product>) { }
     
     async getProducts(): Promise<Product[]> {
-        const products = await this.productModel.find();
+        const products = await this.productModel.find()
+            .populate({ path: 'proveedor', model: 'Proveedor' })
+            .exec();
         return products;
     }
 
     async getProduct(productID: string): Promise<Product> {
-        const product = await this.productModel.findById(productID);
+        const product = await this.productModel.findById(productID)
+            .populate({ path: 'proveedor', model: 'Proveedor' })
+            .exec();
         return product;
     }
 
@@ -31,6 +35,17 @@ export class ProductService {
     async updateProduct(productID, createProductDTO: CreateProductDTO): Promise<Product> {
         const updateProduct = await this.productModel.findByIdAndUpdate(productID, createProductDTO, { new: true });
         return updateProduct;
+    }
+
+    async calculoIVA(productID: string) {
+        const calculoIVA = await this.productModel.findById((productID));
+        const IVA = (calculoIVA.price * 21) / 100 
+        const PriceIVA = calculoIVA.price + IVA;
+
+        return {
+            IVA,
+            PriceIVA
+        }
     }
 
 }

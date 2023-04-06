@@ -51,4 +51,13 @@ export class ProductController {
             productUpdate
         })
     }
+
+    @Get('/calculoIVA/:productID')
+    async calculoIVA(@Res() res, @Param('productID') productID) {
+        const calculoIva = await this.productService.calculoIVA(productID)
+        return res.status(HttpStatus.OK).json({
+            message: 'Calculo del IVA',
+            calculoIva
+        })
+    }
 }
