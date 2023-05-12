@@ -11,12 +11,16 @@ export class ProveedorService {
     constructor(@InjectModel('Proveedor') private readonly proveedorModel: Model<Proveedor>) { }
     
     async getProveedores(): Promise<Proveedor[]> {
-        const proveedores = await this.proveedorModel.find();
+        const proveedores = await this.proveedorModel.find()
+            .populate({ path: 'product', model: 'Product' })
+            .exec();
         return proveedores;
     }
 
     async getProveedor(proveedorID: string): Promise<Proveedor> {
-        const proveedor = await this.proveedorModel.findById(proveedorID);
+        const proveedor = await this.proveedorModel.findById(proveedorID)
+            .populate({ path: 'product', model: 'Product' })
+            .exec();
         return proveedor;
     }
 

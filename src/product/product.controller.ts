@@ -3,6 +3,7 @@ import { CreateProductDTO } from "./dto/product.dto";
 import { ProductService } from './product.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ValidRoles } from 'src/auth/interfaces/valid-roles';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 
 @Controller('product')
@@ -22,21 +23,33 @@ export class ProductController {
     }
 
     //Sin autenticar cualquiera puede acceder
-    @Get('/')
-    async getProducts(@Res() res) {
-        const products = await this.productService.getProducts();
-        return res.status(HttpStatus.OK).json({
-            products
-        })
-    }
+    // @Get('/')
+    // async getProducts(@Res() res) {
+    //     const products = await this.productService.getProducts();
+    //     return res.status(HttpStatus.OK).json({
+    //         products
+    //     })
+    // }
 
-    //Sin autenticar pero si debe estar logeado generando un toquen
+    //Sin autenticar pero si debe estar logeado generando un token
     @Get('/:productID')
     @Auth()
     async getProduct(@Res() res, @Param('productID') productID) {
         const product = await this.productService.getProduct(productID)
         if (!product) throw new NotFoundException('El producto no existe')
         return res.status(HttpStatus.OK).json(product)
+    }
+    
+
+    @Get()
+    async getProductsPaginate(@Res() res, @Query() paginationDto: PaginationDto) {
+        console.log(paginationDto);
+        
+        const productsPaginate = await this.productService.getProductsPaginate(paginationDto)
+        return res.status(HttpStatus.OK).json({
+            message: 'Producto paginado',
+            productsPaginate
+        })
     }
 
     @Delete('/delete')

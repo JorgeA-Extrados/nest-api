@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { ProveedorModule } from './proveedor/proveedor.module';
 import { AuthModule } from './auth/auth.module';
 
+
 @Module({
   imports: [ProductModule, MongooseModule.forRoot('mongodb://localhost/products-nest-tutorial'), ProveedorModule, AuthModule],
   controllers: [AppController],
